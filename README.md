@@ -67,7 +67,7 @@ You get the **same Jetstream backend** you already trust. We did not rewrite aut
 
 ### 1. Require the package
 
-Add the GitHub repository to your app's `composer.json` (installs into `vendor/` like any other package):
+Add the repository to your app's `composer.json`:
 
 ```json
 {
@@ -86,8 +86,6 @@ Add the GitHub repository to your app's `composer.json` (installs into `vendor/`
 ```bash
 composer require ehsanghafoori/jetstream-flux-livewire
 ```
-
-The package is installed under `vendor/ehsanghafoori/jetstream-flux-livewire` — not in your `public/` folder.
 
 ### 2. Configure Flux (Composer)
 
