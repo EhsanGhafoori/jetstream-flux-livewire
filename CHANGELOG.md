@@ -2,6 +2,18 @@
 
 All notable changes to this fork are documented here.
 
+## [1.1.0] - 2026-06-03
+
+### Added
+
+- `--google` installer option for Google One Tap login (Flux UI auth pages, routes, controller, env stubs)
+- Packagist install instructions in README
+- Google sign-in dark mode, full-width button, and personal team creation for One Tap users
+
+### Changed
+
+- Remove `version` field from `composer.json` (Packagist uses git tags)
+
 ## [1.0.0] - 2026-06-02
 
 ### Added
@@ -35,6 +47,7 @@ No changes to Jetstream authentication, team authorization, or Livewire componen
 - Keep dark mode Tailwind classes on install — Flux `@fluxAppearance` requires `dark:` variants on layouts and auth views
 - Add Inter font to guest layout (Flux recommendation)
 
+[1.1.0]: https://github.com/EhsanGhafoori/jetstream-flux-livewire/releases/tag/v1.1.0
 [1.0.2]: https://github.com/EhsanGhafoori/jetstream-flux-livewire/releases/tag/v1.0.2
 
 ## [1.0.1] - 2026-06-02

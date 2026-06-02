@@ -67,7 +67,13 @@ You get the **same Jetstream backend** you already trust. We did not rewrite aut
 
 ### 1. Require the package
 
-Add the repository to your app's `composer.json`:
+From [Packagist](https://packagist.org/packages/ehsanghafoori/jetstream-flux-livewire):
+
+```bash
+composer require ehsanghafoori/jetstream-flux-livewire
+```
+
+If the package is not yet on Packagist, add the GitHub repository to your app's `composer.json` instead:
 
 ```json
 {
@@ -81,10 +87,6 @@ Add the repository to your app's `composer.json`:
         "ehsanghafoori/jetstream-flux-livewire": "^1.0"
     }
 }
-```
-
-```bash
-composer require ehsanghafoori/jetstream-flux-livewire
 ```
 
 ### 2. Configure Flux (Composer)
@@ -116,6 +118,12 @@ php artisan jetstream:install
 # Teams + API + email verification
 php artisan jetstream:install --teams --api --verification
 
+# Google One Tap login on auth pages
+php artisan jetstream:install --google
+
+# Everything together
+php artisan jetstream:install --teams --api --verification --google
+
 # Dark mode + Pest tests
 php artisan jetstream:install --teams --dark --pest
 ```
@@ -126,6 +134,7 @@ php artisan jetstream:install --teams --dark --pest
 | `--api` | Sanctum API tokens |
 | `--verification` | Email verification (Fortify) |
 | `--dark` | Dark mode classes in views |
+| `--google` | Google One Tap login (requires [websitinu/laravel-socialite-google-one-tap](https://packagist.org/packages/websitinu/laravel-socialite-google-one-tap)) |
 | `--pest` | Install Pest test stubs |
 
 ### 4. Frontend & database

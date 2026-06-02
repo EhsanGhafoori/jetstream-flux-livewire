@@ -33,6 +33,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
                                               {--api : Indicates if API support should be installed}
                                               {--verification : Indicates if email verification support should be installed}
                                               {--pest : Indicates if Pest should be installed}
+                                              {--google : Install Google One Tap login with Flux UI on auth pages}
                                               {--composer=global : Absolute path to the Composer binary which should be used to install packages}';
 
     /**
@@ -114,6 +115,12 @@ class InstallCommand extends Command implements PromptsForMissingInput
         copy($stubs.'/PasswordConfirmationTest.php', base_path('tests/Feature/PasswordConfirmationTest.php'));
         copy($stubs.'/PasswordResetTest.php', base_path('tests/Feature/PasswordResetTest.php'));
         copy($stubs.'/RegistrationTest.php', base_path('tests/Feature/RegistrationTest.php'));
+
+        if ($this->option('google')) {
+            if (! $this->installGoogleOneTap()) {
+                return 1;
+            }
+        }
     }
 
     /**
@@ -264,6 +271,157 @@ class InstallCommand extends Command implements PromptsForMissingInput
         $this->components->info('Livewire scaffolding installed successfully.');
 
         return true;
+    }
+
+    /**
+     * Install Google One Tap login scaffolding.
+     *
+     * @return bool
+     */
+    protected function installGoogleOneTap()
+    {
+        if (! $this->requireComposerPackages('laravel/socialite:^5.0', 'websitinu/laravel-socialite-google-one-tap:^2.7')) {
+            return false;
+        }
+
+        $stubPath = __DIR__.'/../../stubs/google';
+
+        (new Filesystem)->ensureDirectoryExists(resource_path('views/flux/icon'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('views/auth/partials'));
+        (new Filesystem)->ensureDirectoryExists(app_path('Http/Controllers/Auth'));
+
+        copy($stubPath.'/resources/views/flux/icon/google.blade.php', resource_path('views/flux/icon/google.blade.php'));
+        copy($stubPath.'/resources/views/auth/partials/google-auth.blade.php', resource_path('views/auth/partials/google-auth.blade.php'));
+        copy($stubPath.'/resources/views/auth/login.blade.php', resource_path('views/auth/login.blade.php'));
+        copy($stubPath.'/resources/views/auth/register.blade.php', resource_path('views/auth/register.blade.php'));
+        copy($stubPath.'/resources/views/layouts/guest.blade.php', resource_path('views/layouts/guest.blade.php'));
+        copy($stubPath.'/app/Http/Controllers/Auth/GoogleOneTapController.php', app_path('Http/Controllers/Auth/GoogleOneTapController.php'));
+
+        $this->configureGoogleOneTapServices();
+        $this->configureGoogleOneTapProvider();
+        $this->configureGoogleOneTapRoutes();
+        $this->configureGoogleOneTapEnvironment();
+
+        $this->components->info('Google One Tap login installed successfully.');
+        $this->components->warn('Add your Google OAuth credentials to .env — see websitinu/laravel-socialite-google-one-tap README.');
+
+        return true;
+    }
+
+    /**
+     * Add Google One Tap credentials to the services config.
+     *
+     * @return void
+     */
+    protected function configureGoogleOneTapServices()
+    {
+        $path = config_path('services.php');
+
+        if (Str::contains(file_get_contents($path), 'laravel-google-one-tap')) {
+            return;
+        }
+
+        $this->replaceInFile(
+            '];',
+            <<<'PHP'
+    'laravel-google-one-tap' => [
+        'client_id' => env('GOOGLE_ONE_TAP_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_ONE_TAP_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_ONE_TAP_LOGIN_URI'),
+    ],
+
+];
+PHP,
+            $path
+        );
+    }
+
+    /**
+     * Register the Google One Tap Socialite driver.
+     *
+     * @return void
+     */
+    protected function configureGoogleOneTapProvider()
+    {
+        $path = app_path('Providers/AppServiceProvider.php');
+        $contents = file_get_contents($path);
+
+        if (Str::contains($contents, 'laravel-google-one-tap')) {
+            return;
+        }
+
+        if (! Str::contains($contents, 'use Illuminate\Support\Facades\Event;')) {
+            $this->replaceInFile(
+                'use Illuminate\Support\ServiceProvider;',
+                "use Illuminate\Support\ServiceProvider;\nuse Illuminate\Support\Facades\Event;\nuse LaravelSocialite\\GoogleOneTap\\LaravelGoogleOneTapServiceProvider;",
+                $path
+            );
+        }
+
+        $this->replaceInFile(
+            "public function boot(): void\n    {\n",
+            "public function boot(): void\n    {\n        Event::listen(function (\\SocialiteProviders\\Manager\\SocialiteWasCalled \$event) {\n            \$event->extendSocialite('laravel-google-one-tap', LaravelGoogleOneTapServiceProvider::class);\n        });\n\n",
+            $path
+        );
+    }
+
+    /**
+     * Add the Google One Tap authentication route.
+     *
+     * @return void
+     */
+    protected function configureGoogleOneTapRoutes()
+    {
+        $path = base_path('routes/web.php');
+
+        if (Str::contains(file_get_contents($path), 'google-one-tap.handler')) {
+            return;
+        }
+
+        (new Filesystem)->append($path, $this->googleOneTapRouteDefinition());
+    }
+
+    /**
+     * Append Google One Tap environment variables.
+     *
+     * @return void
+     */
+    protected function configureGoogleOneTapEnvironment()
+    {
+        $envKeys = <<<'ENV'
+
+GOOGLE_ONE_TAP_CLIENT_ID=
+GOOGLE_ONE_TAP_CLIENT_SECRET=
+GOOGLE_ONE_TAP_LOGIN_URI="${APP_URL}/auth/google/onetap"
+ENV;
+
+        foreach ([base_path('.env'), base_path('.env.example')] as $path) {
+            if (! file_exists($path)) {
+                continue;
+            }
+
+            if (! Str::contains(file_get_contents($path), 'GOOGLE_ONE_TAP_CLIENT_ID')) {
+                (new Filesystem)->append($path, $envKeys);
+            }
+        }
+    }
+
+    /**
+     * Get the route definition for Google One Tap authentication.
+     *
+     * @return string
+     */
+    protected function googleOneTapRouteDefinition()
+    {
+        return <<<'EOF'
+
+use App\Http\Controllers\Auth\GoogleOneTapController;
+
+Route::post('/auth/google/onetap', GoogleOneTapController::class)
+    ->middleware('guest')
+    ->name('google-one-tap.handler');
+
+EOF;
     }
 
     /**
@@ -603,6 +761,7 @@ EOF;
                 'api' => 'API support',
                 'verification' => 'Email verification',
                 'dark' => 'Dark mode',
+                'google' => 'Google One Tap login',
             ])->sort()->all(),
         ))->each(fn ($option) => $input->setOption($option, true));
 
