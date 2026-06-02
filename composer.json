@@ -1,16 +1,18 @@
 {
-    "name": "ehgh1996/jetstream-flux-livewire",
+    "name": "ehsanghafoori/jetstream-flux-livewire",
     "description": "Personal Jetstream fork: Livewire 4, Tailwind 4, and Flux UI — Livewire stack only.",
     "keywords": ["laravel", "jetstream", "livewire", "flux", "tailwind", "auth"],
     "license": "MIT",
+    "homepage": "https://github.com/EhsanGhafoori/jetstream-flux-livewire",
     "support": {
-        "issues": "https://github.com/ehgh1996/jetstream-flux-livewire/issues",
-        "source": "https://github.com/ehgh1996/jetstream-flux-livewire"
+        "issues": "https://github.com/EhsanGhafoori/jetstream-flux-livewire/issues",
+        "source": "https://github.com/EhsanGhafoori/jetstream-flux-livewire"
     },
     "authors": [
         {
-            "name": "ehgh1996",
+            "name": "Ehsan Ghafoori",
             "email": "ehgh1996@gmail.com",
+            "homepage": "https://github.com/EhsanGhafoori",
             "role": "Maintainer"
         }
     ],

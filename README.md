@@ -1,6 +1,6 @@
 # Jetstream Flux Livewire
 
-Personal fork of [Laravel Jetstream](https://github.com/laravel/jetstream) maintained by **ehgh1996**.
+Personal fork of [Laravel Jetstream](https://github.com/laravel/jetstream) by [Ehsan Ghafoori](https://github.com/EhsanGhafoori).
 
 Livewire-only stack with:
 
@@ -23,11 +23,11 @@ Add the repository to your app's `composer.json`:
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/ehgh1996/jetstream-flux-livewire"
+            "url": "https://github.com/EhsanGhafoori/jetstream-flux-livewire"
         }
     ],
     "require": {
-        "ehgh1996/jetstream-flux-livewire": "dev-main"
+        "ehsanghafoori/jetstream-flux-livewire": "dev-master"
     }
 }
 ```
@@ -48,7 +48,7 @@ Configure Flux credentials in `auth.json` (project root):
 Then:
 
 ```bash
-composer require ehgh1996/jetstream-flux-livewire
+composer require ehsanghafoori/jetstream-flux-livewire
 php artisan jetstream:install --teams --api --verification
 npm install && npm run build
 php artisan migrate
@@ -66,7 +66,7 @@ php artisan jetstream:install --api --verification --dark --pest
 
 - [Laravel Jetstream](https://github.com/laravel/jetstream) — MIT
 - [jetstream-flux](https://github.com/grpaiva/jetstream-flux) — Flux UI views — MIT
-- Customized and maintained by [ehgh1996](https://github.com/ehgh1996)
+- Customized and maintained by [EhsanGhafoori](https://github.com/EhsanGhafoori)
 
 ## License
 
