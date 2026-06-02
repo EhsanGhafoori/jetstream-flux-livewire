@@ -248,14 +248,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
             $this->installLivewireTeamStack();
         }
 
-        if (! $this->option('dark')) {
-            $this->removeDarkClasses((new Finder)
-                ->in(resource_path('views'))
-                ->name('*.blade.php')
-                ->filter(fn ($file) => $file->getPathname() !== resource_path('views/welcome.blade.php'))
-            );
-        }
-
         if (file_exists(base_path('pnpm-lock.yaml'))) {
             $this->runCommands(['pnpm install', 'pnpm run build']);
         } elseif (file_exists(base_path('yarn.lock'))) {

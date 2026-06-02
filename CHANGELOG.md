@@ -28,6 +28,15 @@ All notable changes to this fork are documented here.
 
 No changes to Jetstream authentication, team authorization, or Livewire component business logic. UI and frontend tooling only.
 
+## [1.0.2] - 2026-06-02
+
+### Fixed
+
+- Keep dark mode Tailwind classes on install — Flux `@fluxAppearance` requires `dark:` variants on layouts and auth views
+- Add Inter font to guest layout (Flux recommendation)
+
+[1.0.2]: https://github.com/EhsanGhafoori/jetstream-flux-livewire/releases/tag/v1.0.2
+
 ## [1.0.1] - 2026-06-02
 
 ### Fixed

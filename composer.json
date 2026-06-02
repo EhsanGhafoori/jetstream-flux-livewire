@@ -1,7 +1,7 @@
 {
     "name": "ehsanghafoori/jetstream-flux-livewire",
     "description": "Jetstream Livewire-only fork with Livewire 4, Tailwind 4, and Flux UI. UI changes only — core auth and team logic unchanged.",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "keywords": ["laravel", "jetstream", "livewire", "flux", "tailwind", "auth"],
     "license": "MIT",
     "homepage": "https://github.com/EhsanGhafoori/jetstream-flux-livewire",
