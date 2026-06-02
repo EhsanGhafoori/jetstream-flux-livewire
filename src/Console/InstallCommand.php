@@ -148,8 +148,8 @@ class InstallCommand extends Command implements PromptsForMissingInput
             unset($packages['autoprefixer'], $packages['postcss']);
 
             return [
-                '@tailwindcss/forms' => '^4.0',
-                '@tailwindcss/typography' => '^4.0',
+                '@tailwindcss/forms' => '^0.5.11',
+                '@tailwindcss/typography' => '^0.5.19',
                 '@tailwindcss/vite' => '^4.0',
                 'tailwindcss' => '^4.0',
             ] + $packages;
