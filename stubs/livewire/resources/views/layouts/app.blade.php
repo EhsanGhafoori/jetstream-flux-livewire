@@ -17,7 +17,7 @@
 
         <!-- Styles -->
         @livewireStyles
-        @fluxStyles
+        @fluxAppearance
     </head>
     <body class="font-sans bg-white dark:bg-zinc-900 antialiased min-h-screen">
         <x-banner />

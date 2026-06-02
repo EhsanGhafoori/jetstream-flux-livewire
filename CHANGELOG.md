@@ -16,7 +16,7 @@ All notable changes to this fork are documented here.
 
 - Default stack: **Livewire only** (Inertia / Vue stack removed)
 - `jetstream:install` no longer requires a stack argument
-- Layouts include `@fluxStyles` and `@fluxScripts`
+- Layouts include `@fluxAppearance` and `@fluxScripts`
 - Tailwind plugins: `@tailwindcss/forms` and `@tailwindcss/typography` at `^0.5.x` (compatible with Tailwind 4)
 
 ### Removed
@@ -28,4 +28,11 @@ All notable changes to this fork are documented here.
 
 No changes to Jetstream authentication, team authorization, or Livewire component business logic. UI and frontend tooling only.
 
+## [1.0.1] - 2026-06-02
+
+### Fixed
+
+- Flux 2 compatibility: replace removed `@fluxStyles` with `@fluxAppearance` and import `flux.css` in `app.css` ([Flux installation docs](https://fluxui.dev/docs/installation))
+
+[1.0.1]: https://github.com/EhsanGhafoori/jetstream-flux-livewire/releases/tag/v1.0.1
 [1.0.0]: https://github.com/EhsanGhafoori/jetstream-flux-livewire/releases/tag/v1.0.0
